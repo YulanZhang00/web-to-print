@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>project 4</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Science+Gothic:wght@100..900&display=swap" rel="stylesheet">
+    <!-- lamejs 库用于 MP3 编码 -->
+    <script src="https://cdn.jsdelivr.net/npm/lamejs@1.2.1/lame.min.js"></script>
+</head>
+<body>
+    
+    <header class="header">
+        <div class="home_top">
+        <h1>BUTTONS ARCHIVE</h1>
+        </div>
+    </header>
+
+    <div class="bt-nav">
+        <div class="bt-nav-text">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 2L2 7V17L12 22L22 17V7L12 2Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+                <path d="M12 22V12M12 12L2 7M12 12L22 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <span>Drag to explore</span>
+        </div>
+        <button class="bt-nav-zoom zoom-out" aria-label="Zoom out">−</button>
+        <button class="bt-nav-zoom zoom-in" aria-label="Zoom in">+</button>
+    </div>
+
+    <!-- 录音状态指示器 -->
+    <div id="recording-indicator" class="recording-indicator">
+        <div class="recording-dot"></div>
+        <span>REC</span>
+    </div>
+
+    <!-- 录音/导出按钮 -->
+    <button id="record-export-btn" class="record-export-btn" onclick="handleRecordExport()">
+        <svg class="mic-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 1C10.34 1 9 2.34 9 4V12C9 13.66 10.34 15 12 15C13.66 15 15 13.66 15 12V4C15 2.34 13.66 1 12 1Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M19 10V12C19 15.87 15.87 19 12 19C8.13 19 5 15.87 5 12V10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M12 19V23M8 23H16" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <span>Record</span>
+    </button>
+
+    <!-- 波形图预览模态框 -->
+    <div id="waveform-modal" class="waveform-modal">
+        <div class="waveform-modal-content">
+            <div class="waveform-modal-header">
+                <h2>Waveform</h2>
+                <button class="waveform-close-btn" onclick="closeWaveformModal()">×</button>
+            </div>
+            <div class="waveform-canvas-container">
+                <canvas id="waveform-canvas"></canvas>
+            </div>
+            <div class="waveform-modal-actions">
+                <button class="waveform-download-btn" onclick="downloadWaveform()">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M21 15V19C21 20.1 20.1 21 19 21H5C3.9 21 3 20.1 3 19V15" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M7 10L12 15L17 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M12 15V3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    <span>Download PNG</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+
+
+
+    <!-- Navbar 固定在左上角 -->
+    <div class="navbar">
+        <div class="navbar-content">
+            <h1>BUTTONS ARCHIVE</h1>
+        </div>
+    </div>
+
+    <div class="main-container">
+        <div class="column-1">
+            <div class="button1" data-sound="sd1">
+                <img src="img/img1.png" alt="button1">
+            </div>
+            <div class="button2" data-sound="sd2">
+                <img src="img/img2.png" alt="button2">
+            </div>
+            <div class="button3" data-sound="sd3">
+                <img src="img/img3.png" alt="button3">
+            </div>
+        </div>
+        <div class="column-2">
+            <div class="button4" data-sound="sd4">
+                <img src="img/img4.png" alt="button4">
+            </div>
+            <div class="button5" data-sound="sd5">
+                <img src="img/img5.png" alt="button5">
+            </div>
+            <div class="button6" data-sound="sd6">
+                <img src="img/img6.png" alt="button6">
+            </div>
+        </div>
+        <div class="column-3">
+            <div class="button7" data-sound="sd7">
+                <img src="img/img7.png" alt="button7">
+            </div>
+            <div class="button8" data-sound="sd8">
+                <img src="img/img8.png" alt="button8">
+            </div>
+            <div class="button9" data-sound="sd9">
+                <img src="img/img9.png" alt="button9">
+            </div>
+        </div>
+        <div class="column-4">
+            <div class="button10" data-sound="sd10">
+                <img src="img/img10.png" alt="button10">
+            </div>
+            <div class="button11" data-sound="sd11">
+                <img src="img/img11.png" alt="button11">
+            </div>
+            <div class="button12" data-sound="sd12">
+                <img src="img/img12.png" alt="button12">
+            </div>
+        </div>
+    </div>
+
+  
+    <!-- 遮罩层 -->
+    <div class="overlay" id="overlay" onclick="closeSidebar()"></div>
+
+    <!-- 侧边栏 -->
+    <div class="sidebar" id="sidebar">
+    <div class="sidebar-content" id="bt1">
+        <div class="sidebar-header">
+            <h2 class="sidebar-title"> Chrysler pushbutton driving</h2>
+            <button class="close-btn" onclick="closeSidebar()">X</button>
+        </div>
+        <div class="sidebar-body">
+            <p>First on Plymouth in the low-price 3! The how of it - Select your driving range with just a finger-tip touch on a button. Then PowerFlite fully automatic transmission takes over. The why of it - To give you new care and safety of control! As easy as touching a light switch . . . and safely positioned at the left of the steering wheel, where children can’t reach it while you’re driving. It’s a partner of PowerFlite - the transmission so smooth it responds to a finger-tip touch. The joy of it - It’s the ultimate in driving ease. Restore the thrill you knew with your first car.</p>
+
+        </div>
+    </div>
+    
+    <div class="sidebar-content" id="bt2">
+        <div class="sidebar-header">
+            <h2 class="sidebar-title">Snooze button</h2>
+            <button class="close-btn" onclick="closeSidebar()">X</button>
+        </div>
+        <div class="sidebar-body">
+            <p>The Snooze button was first marketed in 1956 by General Electric-Telechron. The Snooz-Alarm. (Hey, it’s the 50th anniversary of the Snooze button! Where’s the parade?) Telechron made a wide variety of clocks from about 1917 until 1959, merging and unmerging with General Electric along the way. In 1959, Westclox marketed the Drowse. </p>
+        </div>
+    </div>     
+
+    <div class="sidebar-content" id="bt3">
+        <div class="sidebar-header">
+            <h2 class="sidebar-title">The OK button</h2>
+            <button class="close-btn" onclick="closeSidebar()">X</button>
+        </div>
+        <div class="sidebar-body">
+            <p>It’s the one button that requires nearly no translation. Luckily, it’s also one of the most compact words available. OK. Two letters that will fit on any button. OK is not just a word anymore. It’s an icon. A word-icon.
+                OK typically lives in the center of four arrows, navigational controls for maneuvering around menus or other onscreen options. It sits in the center, offering comfort. It grounds you when you’re lost. It affirms when you’re done. Don’t worry, it’s OK.</p>
+        </div>
+    </div>
+
+    <div class="sidebar-content" id="bt4">
+        <div class="sidebar-header">
+            <h2 class="sidebar-title">Kill switch</h2>
+            <button class="close-btn" onclick="closeSidebar()">X</button>
+        </div>
+        <div class="sidebar-body"
+        <p>Early aviators using rotary engine–powered aircraft from the beginnings of their use in 1908, up through the end of World War I in 1918 had what could be called a reversed functionality version of the "dead man's switch" for cutting the ignition voltage to the spark plugs on such a power-plant, to give a degree of in-flight speed control for a rotary engine. This was often called a "blip switch" or "coupe switch" (from the French term coupez, or "cut") and when not being pressed, allowed the high voltage from the engine's magnetos to operate the ignition with normal engine operation in flight—pressing the "blip switch" cut the flow of high voltage from the magnetos, stopping the combustion process in the cylinders. When such a "blip switch" was intermittently used on landing approach, this allowed a limited degree of engine speed control, as rotary engines generally did not have a conventional throttle in their carburettors to regulate engine speed, but only for governing the fuel-air ratio for start-up and full-speed operation.</p>
+        </div>
+    </div>
+
+    <div class="sidebar-content" id="bt5">
+        <div class="sidebar-header">
+            <h2 class="sidebar-title">Sidebar</h2>
+            <button class="close-btn" onclick="closeSidebar()">X</button>
+        </div>
+        <div class="sidebar-body">
+            <h2>Menu 5</h2>
+        </div>
+    </div>
+
+    <div class="sidebar-content" id="bt6">
+        <div class="sidebar-header">
+            <h2 class="sidebar-title">Sidebar</h2>
+            <button class="close-btn" onclick="closeSidebar()">X</button>
+        </div>
+        <div class="sidebar-body">
+            <h2>Menu 6</h2>
+        </div>
+    </div>
+
+    <div class="sidebar-content" id="bt7">
+        <div class="sidebar-header">
+            <h2 class="sidebar-title">Sidebar</h2>
+            <button class="close-btn" onclick="closeSidebar()">X</button>
+        </div>
+        <div class="sidebar-body">
+            <h2>Menu 7</h2>
+        </div>
+    </div>
+    <div class="sidebar-content" id="bt8">
+        <div class="sidebar-header">
+            <h2 class="sidebar-title">Sidebar</h2>
+            <button class="close-btn" onclick="closeSidebar()">X</button>
+        </div>
+        <div class="sidebar-body">
+            <h2>Menu 8</h2>
+        </div>
+    </div>
+
+    <div class="sidebar-content" id="bt9">
+        <div class="sidebar-header">
+            <h2 class="sidebar-title">Sidebar</h2>
+            <button class="close-btn" onclick="closeSidebar()">X</button>
+        </div>
+        <div class="sidebar-body">
+            <h2>Menu 9</h2>
+        </div>
+    </div>
+
+    <div class="sidebar-content" id="bt10">
+        <div class="sidebar-header">
+            <h2 class="sidebar-title">Sidebar</h2>
+            <button class="close-btn" onclick="closeSidebar()">X</button>
+        </div>
+        <div class="sidebar-body">
+            <h2>Menu 10</h2>
+        </div>
+    </div>
+
+    <div class="sidebar-content" id="bt11">
+        <div class="sidebar-header">
+            <h2 class="sidebar-title">Sidebar</h2>
+            <button class="close-btn" onclick="closeSidebar()">X</button>
+        </div>
+        <div class="sidebar-body">
+            <h2>Menu 11</h2>
+        </div>
+    </div>
+
+    <div class="sidebar-content" id="bt12">
+        <div class="sidebar-header">
+            <h2 class="sidebar-title">Sidebar</h2>
+            <button class="close-btn" onclick="closeSidebar()">X</button>
+        </div>
+        <div class="sidebar-body">
+            <h2>Menu 12</h2>
+        </div>
+    </div>
+
+</div>
+
+
+    <script src="script.js"></script>
+</body>
+</html>
